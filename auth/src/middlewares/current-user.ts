@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
+import { Request, Response, NextFunction } from 'express';
+import jwt from 'jsonwebtoken';
 
 interface UserPayload {
   id: string;
@@ -7,7 +7,6 @@ interface UserPayload {
 }
 
 declare global {
-  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
     interface Request {
       currentUser?: UserPayload;
@@ -25,11 +24,12 @@ export const currentUser = (
   }
 
   try {
-    const payload = jwt.verify(req.session.jwt, process.env.JWT_KEY!);
+    const payload = jwt.verify(
+      req.session.jwt,
+      process.env.JWT_KEY!
+    ) as UserPayload;
     req.currentUser = payload;
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (err) {}
 
   next();
 };
